@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://565ghjwhrwi2"]
+[gd_scene load_steps=6 format=3 uid="uid://565ghjwhrwi2"]
 
 [ext_resource type="PackedScene" uid="uid://ba80knmb113sm" path="res://scenes/farm.tscn" id="1_onqr8"]
 [ext_resource type="PackedScene" uid="uid://py2dg6hgbmhy" path="res://scenes/characters/blue_pawn.tscn" id="2_ycayy"]
+[ext_resource type="PackedScene" uid="uid://dy2fncgxycay1" path="res://scenes/characters/boy.tscn" id="3_y3j0m"]
 [ext_resource type="PackedScene" uid="uid://b5loe44446qha" path="res://scenes/Tree.tscn" id="3_ycayy"]
 [ext_resource type="Script" uid="uid://jq25ge1omp35" path="res://scripts/TreeManager.gd" id="4_ycayy"]
 
@@ -11,6 +12,8 @@
 script = ExtResource("4_ycayy")
 
 [node name="TileMapLayer" parent="." instance=ExtResource("1_onqr8")]
+
+[node name="boy" parent="." instance=ExtResource("3_y3j0m")]
 
 [node name="CharacterBody2D" parent="." instance=ExtResource("2_ycayy")]
 position = Vector2(-97, -117)
