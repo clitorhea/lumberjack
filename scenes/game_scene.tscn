@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://565ghjwhrwi2"]
+
+[ext_resource type="PackedScene" uid="uid://ba80knmb113sm" path="res://scenes/farm.tscn" id="1_onqr8"]
+[ext_resource type="PackedScene" uid="uid://py2dg6hgbmhy" path="res://scenes/characters/blue_pawn.tscn" id="2_ycayy"]
+[ext_resource type="PackedScene" uid="uid://b5loe44446qha" path="res://scenes/Tree.tscn" id="3_ycayy"]
+[ext_resource type="Script" uid="uid://jq25ge1omp35" path="res://scripts/TreeManager.gd" id="4_ycayy"]
+
+[node name="GameScene" type="Node2D"]
+
+[node name="TreeManager" type="Node" parent="."]
+script = ExtResource("4_ycayy")
+
+[node name="TileMapLayer" parent="." instance=ExtResource("1_onqr8")]
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_ycayy")]
+position = Vector2(-97, -117)
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
+position = Vector2(95, 135)
+position_smoothing_enabled = true
+
+[node name="StaticBody2D" parent="." instance=ExtResource("3_ycayy")]
+position = Vector2(-242, -174)
+
+[node name="StaticBody2D2" parent="." instance=ExtResource("3_ycayy")]
+position = Vector2(-85, -316)
