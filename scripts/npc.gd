@@ -12,7 +12,7 @@ enum State {
 @export_group("Lumberjack Settings")
 @export var chop_damage: int = 1
 @export var chop_range: float = 50.0
-@export var search_range: float = 300.0
+@export var search_range: float = 500.0
 @export var chop_cooldown: float = 1.0
 @export var home_position: Vector2
 @export var wood_capacity: int = 20
@@ -42,6 +42,12 @@ func _ready() -> void:
 	# Start with idle state
 	_enter_state(State.IDLE)
 
+func _exit_tree() -> void:
+	# Clean up tree reservation when NPC is removed
+	if target_tree:
+		target_tree.release_reservation()
+		target_tree = null
+
 func _physics_process(delta: float) -> void:
 	# Update base movement
 	super._physics_process(delta)
@@ -67,10 +73,11 @@ func get_input() -> void:
 	pass
 
 func _enter_state(new_state: State) -> void:
-	# Exit current state
-	match current_state:
-		State.CHOPPING:
-			play_animation("chopping")
+	# Exit current state - release tree reservation if abandoning target
+	if target_tree and (current_state == State.MOVING_TO_TREE or current_state == State.CHOPPING):
+		if new_state == State.IDLE or new_state == State.SEARCHING_TREE or new_state == State.RETURNING_HOME:
+			target_tree.release_reservation()
+			target_tree = null
 	
 	current_state = new_state
 	
@@ -105,20 +112,24 @@ func _search_for_tree() -> void:
 	if TreeManager.instance == null:
 		print("ERROR: TreeManager.instance is null!")
 		return
-	var closest_tree = TreeManager.instance.get_closest_tree(global_position, search_range)
-	print ("Closest tree found: ", closest_tree) 
-	if closest_tree:
+	var closest_tree = TreeManager.instance.get_closest_available_tree(global_position, search_range)
+	print ("Closest available tree found: ", closest_tree) 
+	if closest_tree and closest_tree.reserve_for_npc(self):
 		print("Tree position: ", closest_tree.global_position)
 		print("NPC position: ", global_position)
+		print("Tree reserved successfully by NPC")
 		target_tree = closest_tree
 		_enter_state(State.MOVING_TO_TREE)
 	else:
-		# No tree found, go back to idle
-		print ("No tree found, go back to idle")
+		# No available tree found, go back to idle
+		print ("No available tree found, go back to idle")
 		_enter_state(State.IDLE)
 
 func _process_moving_to_tree(delta: float) -> void:
-	if not target_tree or not target_tree.is_choppable():
+	if not target_tree or not target_tree.is_choppable() or not target_tree.is_reserved_by(self):
+		if target_tree:
+			target_tree.release_reservation()
+		target_tree = null
 		_enter_state(State.SEARCHING_TREE)
 		return
 	
@@ -131,7 +142,10 @@ func _process_moving_to_tree(delta: float) -> void:
 		input_vector = get_direction_to(target_tree.get_chop_position())
 
 func _process_chopping(delta: float) -> void:
-	if not target_tree or not target_tree.is_choppable():
+	if not target_tree or not target_tree.is_choppable() or not target_tree.is_reserved_by(self):
+		if target_tree:
+			target_tree.release_reservation()
+		target_tree = null
 		_enter_state(State.SEARCHING_TREE)
 		return
 	
@@ -149,8 +163,7 @@ func _process_chopping(delta: float) -> void:
 func _perform_chop() -> void:
 	if not target_tree:
 		return
-	
-	# Play chop animation
+		
 	play_oneshot_animation("chopping", false)
 	
 	# Deal damage to tree
@@ -159,6 +172,7 @@ func _perform_chop() -> void:
 	# Check if tree was destroyed
 	if not target_tree.is_choppable():
 		wood_carried += target_tree.wood_amount
+		# Tree reservation is automatically cleared when tree is chopped down
 		target_tree = null
 		
 		# Decide next action
@@ -204,6 +218,64 @@ func _draw() -> void:
 	draw_string(font, Vector2(-50, -40), state_text + " Wood: " + str(wood_carried), 
 		HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.WHITE)
 
+# Called when one-shot animation finishes
+func _on_oneshot_animation_finished(return_to_idle: bool) -> void:
+	if return_to_idle:
+		update_animation()
+
 # Optional: Get status for UI or debugging
 func get_status() -> String:
 	return State.keys()[current_state] + " - Wood: " + str(wood_carried) + "/" + str(wood_capacity)
+
+func play_animation(base_name: String) -> void:
+	if not animated_sprite:
+		return
+	
+	var prefix = ""
+	if base_name == "idle":
+		prefix = animation_prefix_idle
+	elif base_name == "walk":
+		prefix = animation_prefix_walk
+	
+	var animation_direction = facing_direction
+	var should_flip = false
+	
+	# Handle left direction by using right animations and flipping sprite
+	if facing_direction == "left":
+		animation_direction = "right"
+		should_flip = true
+	
+	var full_animation_name = prefix + animation_direction
+	
+	# Only change animation if it's different from current or flip state changed
+	if animated_sprite.animation != full_animation_name or animated_sprite.flip_h != should_flip:
+		if animated_sprite.sprite_frames and animated_sprite.sprite_frames.has_animation(full_animation_name):
+			animated_sprite.flip_h = should_flip
+			animated_sprite.play(full_animation_name)
+		else:
+			push_warning("Animation not found: " + full_animation_name)
+
+# Play a one-shot animation and return to idle/walk
+func play_oneshot_animation(animation_base: String, return_to_idle: bool = true) -> void:
+	if not animated_sprite:
+		return
+	
+	var animation_direction = facing_direction
+	var should_flip = false
+	
+	# Handle left direction by using right animations and flipping sprite
+	if facing_direction == "left":
+		animation_direction = "right"
+		should_flip = true
+		
+	var full_animation_name = animation_base + "_" + animation_direction
+	
+	if animated_sprite.sprite_frames.has_animation(full_animation_name):
+		animated_sprite.flip_h = should_flip
+		animated_sprite.play(full_animation_name)
+		
+		# Connect to animation_finished if not already connected
+		if not animated_sprite.animation_finished.is_connected(_on_oneshot_animation_finished):
+			animated_sprite.animation_finished.connect(_on_oneshot_animation_finished.bind(return_to_idle), CONNECT_ONE_SHOT)
+	else:
+		push_warning("Animation not found: " + full_animation_name)

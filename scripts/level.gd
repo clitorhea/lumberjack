@@ -1,4 +1,4 @@
-# Level.gd
+# level.gd
 extends Node2D
 
 @export var tree_scene: PackedScene = preload("res://scenes/Tree.tscn")

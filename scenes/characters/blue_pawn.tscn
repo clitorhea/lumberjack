@@ -97,7 +97,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_x654d")
 }],
 "loop": true,
-"name": &"chopping",
+"name": &"chopping_right",
 "speed": 8.0
 }, {
 "frames": [{
@@ -120,7 +120,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_yry5q")
 }],
 "loop": true,
-"name": &"idle",
+"name": &"idle_down",
 "speed": 8.0
 }, {
 "frames": [{
@@ -143,20 +143,20 @@ animations = [{
 "texture": SubResource("AtlasTexture_hjt8i")
 }],
 "loop": true,
-"name": &"walk",
+"name": &"walk_right",
 "speed": 8.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5syfx"]
 radius = 17.72
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="blue_pawn" type="CharacterBody2D"]
 script = ExtResource("1_pqqbv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_l024q")
-animation = &"idle"
-autoplay = "idle"
+animation = &"idle_down"
+autoplay = "idle_down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_5syfx")

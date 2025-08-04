@@ -20,12 +20,10 @@ var input_vector: Vector2 = Vector2.ZERO
 var move_direction: Vector2 = Vector2.ZERO
 
 # Animation settings
-@export var has_diagonal_animations: bool = false  # Set true if you have 8-directional sprites
 @export var animation_prefix_idle: String = "idle_"
 @export var animation_prefix_walk: String = "walk_"
 
 # Optional: Movement constraints
-@export var eight_directional: bool = false
 @export var four_directional: bool = false
 
 # Called when the node enters the scene tree
@@ -81,11 +79,6 @@ func process_movement_direction() -> void:
 			move_direction = Vector2(sign(move_direction.x), 0)
 		else:
 			move_direction = Vector2(0, sign(move_direction.y))
-	elif eight_directional and move_direction.length() > 0:
-		# Lock to 8 directions
-		var angle = move_direction.angle()
-		var segment = round(angle / (PI / 4)) * (PI / 4)
-		move_direction = Vector2.from_angle(segment)
 
 # Handle movement with acceleration and friction
 func handle_movement(delta: float) -> void:
@@ -107,10 +100,7 @@ func handle_movement(delta: float) -> void:
 
 # Update the facing direction based on movement
 func update_facing_direction() -> void:
-	if has_diagonal_animations:
-		facing_direction = get_8way_direction(last_direction)
-	else:
-		facing_direction = get_4way_direction(last_direction)
+	facing_direction = get_4way_direction(last_direction)
 
 # Get 4-way direction string from vector
 func get_4way_direction(direction: Vector2) -> String:
@@ -125,20 +115,6 @@ func get_4way_direction(direction: Vector2) -> String:
 		else:
 			return "up"
 
-# Get 8-way direction string from vector
-func get_8way_direction(direction: Vector2) -> String:
-	var angle = direction.angle()
-	var segment = round(angle / (PI / 4))
-	match segment:
-		0: return "right"
-		1: return "down_right"
-		2: return "down"
-		3: return "down_left"
-		4, -4: return "left"
-		-3: return "up_left"
-		-2: return "up"
-		-1: return "up_right"
-		_: return "down"
 
 # Update states
 func update_states() -> void:
@@ -162,11 +138,19 @@ func play_animation(base_name: String) -> void:
 	elif base_name == "walk":
 		prefix = animation_prefix_walk
 	
-	var full_animation_name = prefix + facing_direction
+	var animation_direction = facing_direction
+	var should_flip = false 
+	
+	if facing_direction == "left" : 
+		animation_direction = "right"
+		should_flip = true 
+	
+	var full_animation_name = prefix + animation_direction
 	
 	# Only change animation if it's different from current
-	if animated_sprite.animation != full_animation_name:
+	if animated_sprite.animation != full_animation_name or animated_sprite.flip_h != should_flip:
 		if animated_sprite.sprite_frames and animated_sprite.sprite_frames.has_animation(full_animation_name):
+			animated_sprite.flip_h = should_flip
 			animated_sprite.play(full_animation_name)
 		else:
 			push_warning("Animation not found: " + full_animation_name)
@@ -239,7 +223,7 @@ func get_current_animation_base() -> String:
 		return ""
 	
 	var current = animated_sprite.animation
-	for direction in ["up", "down", "left", "right", "up_left", "up_right", "down_left", "down_right"]:
+	for direction in ["up", "down", "left", "right"]:
 		current = current.replace("_" + direction, "")
 	
 	return current

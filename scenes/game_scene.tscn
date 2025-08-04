@@ -15,15 +15,110 @@ script = ExtResource("4_ycayy")
 
 [node name="boy" parent="." instance=ExtResource("3_y3j0m")]
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("2_ycayy")]
-position = Vector2(-97, -117)
-
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
-position = Vector2(95, 135)
+[node name="Camera2D" type="Camera2D" parent="boy"]
+limit_left = -3520
+limit_top = -1587
+limit_right = 3520
+limit_bottom = 1587
 position_smoothing_enabled = true
 
-[node name="StaticBody2D" parent="." instance=ExtResource("3_ycayy")]
-position = Vector2(-242, -174)
+[node name="blue_pawn" parent="." instance=ExtResource("2_ycayy")]
+position = Vector2(262, -149)
 
-[node name="StaticBody2D2" parent="." instance=ExtResource("3_ycayy")]
-position = Vector2(-85, -316)
+[node name="blue_pawn2" parent="." instance=ExtResource("2_ycayy")]
+position = Vector2(167, -234)
+
+[node name="blue_pawn3" parent="." instance=ExtResource("2_ycayy")]
+position = Vector2(120, -119)
+
+[node name="tree" type="Node" parent="."]
+
+[node name="tree" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-355, -252)
+
+[node name="tree2" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-196, -313)
+
+[node name="tree11" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-70, -423)
+
+[node name="tree12" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-70, -423)
+
+[node name="tree3" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-511, -261)
+
+[node name="tree4" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-443, -110)
+
+[node name="tree5" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-305, -47)
+
+[node name="tree6" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-462, 82)
+
+[node name="tree7" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-336, 139)
+
+[node name="tree8" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-467, -448)
+
+[node name="tree9" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-317, -463)
+
+[node name="tree10" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-606, -481)
+
+[node name="tree13" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-623, -344)
+
+[node name="tree14" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-612, -190)
+
+[node name="tree15" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-634, -67)
+
+[node name="tree16" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-571, 77)
+
+[node name="tree17" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-686, 194)
+
+[node name="tree18" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-513, 207)
+
+[node name="tree19" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-189, -479)
+
+[node name="tree20" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-235, -197)
+
+[node name="tree21" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-216, 14)
+
+[node name="tree22" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-222, 148)
+
+[node name="tree23" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-374, 242)
+
+[node name="tree24" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-716, -501)
+
+[node name="tree25" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-421, -621)
+
+[node name="tree26" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-247, -610)
+
+[node name="tree27" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-105, -616)
+
+[node name="tree28" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-712, -246)
+
+[node name="tree29" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-383, -390)
+
+[node name="tree30" parent="tree" instance=ExtResource("3_ycayy")]
+position = Vector2(-725, -35)

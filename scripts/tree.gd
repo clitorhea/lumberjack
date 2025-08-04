@@ -15,6 +15,7 @@ signal health_changed(new_health: int)
 
 var current_health: int
 var is_chopped: bool = false
+var reserved_by = null  # Reference to NPC that reserved this tree
 
 func _ready() -> void:
 	current_health = max_health
@@ -61,6 +62,7 @@ func _play_hit_effect() -> void:
 
 func _chop_down() -> void:
 	is_chopped = true
+	reserved_by = null  # Clear reservation when tree is chopped
 	tree_chopped.emit()
 	
 	# Disable collision
@@ -91,6 +93,7 @@ func _drop_wood() -> void:
 
 func _respawn() -> void:
 	is_chopped = false
+	reserved_by = null  # Clear any lingering reservation
 	current_health = max_health
 	visible = true
 	collision_shape.disabled = false
@@ -108,3 +111,18 @@ func get_chop_position() -> Vector2:
 
 func is_choppable() -> bool:
 	return not is_chopped
+
+func is_available() -> bool:
+	return not is_chopped and reserved_by == null
+
+func reserve_for_npc(npc) -> bool:
+	if is_available():
+		reserved_by = npc
+		return true
+	return false
+
+func release_reservation() -> void:
+	reserved_by = null
+
+func is_reserved_by(npc) -> bool:
+	return reserved_by == npc
