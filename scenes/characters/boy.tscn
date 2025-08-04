@@ -252,7 +252,7 @@ radius = 3.0
 height = 18.0
 
 [node name="boy" type="CharacterBody2D"]
-scale = Vector2(2, 2)
+scale = Vector2(4, 4)
 script = ExtResource("1_d00s1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

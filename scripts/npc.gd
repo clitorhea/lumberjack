@@ -133,13 +133,14 @@ func _process_moving_to_tree(delta: float) -> void:
 		_enter_state(State.SEARCHING_TREE)
 		return
 	
-	var distance = get_distance_to(target_tree.get_chop_position())
+	var chop_position = target_tree.get_chop_position(global_position)
+	var distance = get_distance_to(chop_position)
 	
 	if distance <= chop_range:
 		_enter_state(State.CHOPPING)
 	else:
-		# Move towards tree
-		input_vector = get_direction_to(target_tree.get_chop_position())
+		# Move towards tree's chop position
+		input_vector = get_direction_to(chop_position)
 
 func _process_chopping(delta: float) -> void:
 	if not target_tree or not target_tree.is_choppable() or not target_tree.is_reserved_by(self):

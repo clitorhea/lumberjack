@@ -105,9 +105,37 @@ func _respawn() -> void:
 	if animated_sprite.sprite_frames.has_animation("idle"):
 		animated_sprite.play("idle")
 
-func get_chop_position() -> Vector2:
-	# Return position where NPC should stand to chop
-	return global_position
+func get_chop_position(npc_position: Vector2 = Vector2.ZERO) -> Vector2:
+	# Calculate position where NPC should stand to chop based on approach direction
+	if npc_position == Vector2.ZERO:
+		# Fallback to tree position if no NPC position provided
+		return global_position
+	
+	# Calculate direction from NPC to tree
+	var direction_to_tree = (global_position - npc_position).normalized()
+	
+	# Determine which side the NPC is approaching from
+	var chop_offset = Vector2.ZERO
+	var offset_distance = 40.0  # Distance from tree center to chop position
+	
+	# If NPC is approaching more from horizontal direction
+	if abs(direction_to_tree.x) > abs(direction_to_tree.y):
+		if direction_to_tree.x > 0:
+			# NPC is to the left of tree, place chop position to the left
+			chop_offset = Vector2(-offset_distance, 0)
+		else:
+			# NPC is to the right of tree, place chop position to the right
+			chop_offset = Vector2(offset_distance, 0)
+	else:
+		# If NPC is approaching more from vertical direction
+		if direction_to_tree.y > 0:
+			# NPC is above tree, place chop position above
+			chop_offset = Vector2(0, -offset_distance)
+		else:
+			# NPC is below tree, place chop position below
+			chop_offset = Vector2(0, offset_distance)
+	
+	return global_position + chop_offset
 
 func is_choppable() -> bool:
 	return not is_chopped
