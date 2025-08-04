@@ -1,0 +1,54 @@
+[gd_scene load_steps=8 format=3 uid="uid://wm3e58a5smt2"]
+
+[ext_resource type="Texture2D" uid="uid://dvmd6hus03wmj" path="res://assets/Tiny Swords (Update 010)/Factions/Goblins/Buildings/Wood_Tower/Wood_Tower_Blue.png" id="1_x65b2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lkifg"]
+atlas = ExtResource("1_x65b2")
+region = Rect2(0, 0, 256, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lt86h"]
+atlas = ExtResource("1_x65b2")
+region = Rect2(256, 0, 256, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_88s7u"]
+atlas = ExtResource("1_x65b2")
+region = Rect2(512, 0, 256, 192)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1o8ly"]
+atlas = ExtResource("1_x65b2")
+region = Rect2(768, 0, 256, 192)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2tlaj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lkifg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lt86h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_88s7u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1o8ly")
+}],
+"loop": true,
+"name": &"front",
+"speed": 7.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3tjf0"]
+size = Vector2(82, 53)
+
+[node name="wood_tower_blue" type="StaticBody2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_2tlaj")
+animation = &"front"
+autoplay = "front"
+frame_progress = 0.981782
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 37.5)
+shape = SubResource("RectangleShape2D_3tjf0")

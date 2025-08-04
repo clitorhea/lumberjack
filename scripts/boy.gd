@@ -4,7 +4,7 @@ extends BaseCharacter
 func _ready() -> void:
 	# Set boy-specific movement values
 	move_speed = 250.0
-	acceleration = 1200.0
+	acceleration = 1500.0
 	friction = 1000.0
 	
 	super._ready()
