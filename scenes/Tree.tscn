@@ -73,8 +73,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_82hvc"]
-radius = 14.0
-height = 28.0
+radius = 12.0
+height = 24.0
 
 [node name="tree" type="StaticBody2D"]
 script = ExtResource("1_2cic4")
@@ -86,7 +86,7 @@ autoplay = "idle"
 frame_progress = 0.933251
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 69)
+position = Vector2(0, 68)
 shape = SubResource("CapsuleShape2D_82hvc")
 
 [node name="HealthBar" type="ProgressBar" parent="."]
