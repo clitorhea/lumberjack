@@ -27,7 +27,7 @@ func get_closest_tree(from_position: Vector2, max_distance: float = INF):
 
 func get_closest_available_tree(from_position: Vector2, max_distance: float = INF):
 	var trees = get_tree().get_nodes_in_group("trees")
-	print("TreeManager: Found ", trees.size(), " trees in group")
+	#print("TreeManager: Found ", trees.size(), " trees in group")
 	var closest_tree = null
 	var closest_distance: float = max_distance
 	

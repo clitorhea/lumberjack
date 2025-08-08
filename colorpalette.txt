@@ -1,0 +1,10 @@
+| Element                 | Base Color          | Accent / Detail | Mood Control                           |
+| ----------------------- | ------------------- | --------------- | -------------------------------------- |
+| Grass                   | #a6c48a             | #6f9e64         | Day: bright, Night: dull olive         |
+| Soil / Tilled           | #9a7b59             | #6e4d36         | Slight reddish tone for warmth         |
+| Buildings (wood)        | #c8a671             | #875f39         | Adds rustic charm                      |
+| Water (well/pond)       | #6cb8e6             | #4d88a3         | Calm with subtle ripples               |
+| Fence/woodwork          | #9f8052             | #6b5a3c         | Matches tools/building accents         |
+| Shadows                 | #4a4a4a (low alpha) | –               | Adds grounded depth                    |
+| Horror hints (optional) | #726d87             | #b34d4d         | Used sparingly (tools moved, flickers) |
+
